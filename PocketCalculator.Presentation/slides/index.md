@@ -1,152 +1,229 @@
-- title : FsReveal
-- description : Introduction to FsReveal
-- author : Karlkim Suwanmongkol
-- theme : night
+- title : FParsec
+- description : Introduction to Parsec for F# 
+- author : Johann Dirry
+- theme : moon
 - transition : default
 
 ***
 
-### What is FsReveal?
+## FParsec 
 
-- Generates [reveal.js](http://lab.hakim.se/reveal-js/#/) presentation from [markdown](http://daringfireball.net/projects/markdown/)
-- Utilizes [FSharp.Formatting](https://github.com/tpetricek/FSharp.Formatting) for markdown parsing
-- Get it from [http://fsprojects.github.io/FsReveal/](http://fsprojects.github.io/FsReveal/)
-
-![FsReveal](images/logo.png)
+An introduction to the parser combinator library FParsec 
 
 ***
 
-### Reveal.js
+### Overview
 
-- A framework for easily creating beautiful presentations using HTML.
-
-
-> **Atwood's Law**: any application that can be written in JavaScript, will eventually be written in JavaScript.
-
-***
-
-### FSharp.Formatting
-
-- F# tools for generating documentation (Markdown processor and F# code formatter).
-- It parses markdown and F# script file and generates HTML or PDF.
-- Code syntax highlighting support.
-- It also evaluates your F# code and produce tooltips.
-
-***
-
-### Syntax Highlighting
-
-#### F# (with tooltips)
-
-    let a = 5
-    let factorial x = [1..x] |> List.reduce (*)
-    let c = factorial a
+- [FParsec](http://www.quanttec.com/fparsec/) is a port of Haskell's [Parsec](https://wiki.haskell.org/Parsec)
+- provides a custom DSL to combine parsers 
+- parsers are combined to generate a parser
 
 ---
 
-#### C#
+#### What can it do? 
 
-    [lang=cs]
-    using System;
-
-    class Program
-    {
-        static void Main()
-        {
-            Console.WriteLine("Hello, world!");
-        }
-    }
+- recursive-descent text parser for formal LL-type grammars
+  - possible symbols must folow deterministically from previous symbols
+- support for state and backtracking 
 
 ---
 
-#### JavaScript
+#### Alternatives: [FsLex, FsYacc](http://fsprojects.github.io/FsLexYacc/)
 
-    [lang=js]
-    function copyWithEvaluation(iElem, elem) {
-        return function (obj) {
-            var newObj = {};
-            for (var p in obj) {
-                var v = obj[p];
-                if (typeof v === "function") {
-                    v = v(iElem, elem);
-                }
-                newObj[p] = v;
-            }
-            if (!newObj.exactTiming) {
-                newObj.delay += exports._libraryDelay;
-            }
-            return newObj;
-        };
-    }
+- Port of the UNIX Tools `lex` and `yacc`
+- FsLex and FsYacc provide a custom DSL in F# 
+
+
+    let digit = ['0'-'9']
+    let whitespace = [' ' '\t' ]
+    let newline = ('\n' | '\r' '\n')
+    rule token = parse
+        | whitespace     { token lexbuf }
+        | newline        { newline lexbuf; token lexbuf }
+        | "while"        { WHILE }
 
 
 ---
 
-#### Haskell
- 
-    [lang=haskell]
-    recur_count k = 1 : 1 : 
-        zipWith recurAdd (recur_count k) (tail (recur_count k))
-            where recurAdd x y = k * x + y
+#### Alternatives: [ANTLR4](http://www.antlr.org/)
 
-    main = do
-      argv <- getArgs
-      inputFile <- openFile (head argv) ReadMode
-      line <- hGetLine inputFile
-      let [n,k] = map read (words line)
-      printf "%d\n" ((recur_count k) !! (n-1))
+- available for many programming languages
+- C, Python, Java, C#, etc. 
+- relies on custom grammar definition 
 
-*code from [NashFP/rosalind](https://github.com/NashFP/rosalind/blob/master/mark_wutka%2Bhaskell/FIB/fib_ziplist.hs)*
 
----
+    grammar Expr;		
+    prog:	(expr NEWLINE)* ;
+    expr:	expr ('*'|'/') expr
+        |	expr ('+'|'-') expr
+        |	INT
+        |	'(' expr ')'
+        ;
+    INT     : [0-9]+ ;
 
-### SQL
+--- 
 
-    [lang=sql]
-    select *
-    from
-    (select 1 as Id union all select 2 union all select 3) as X
-    where Id in (@Ids1, @Ids2, @Ids3)
+#### Alternatives: Ship your own 
 
-*sql from [Dapper](https://code.google.com/p/dapper-dot-net/)*
-
----
-
-### C/AL
-
-    [lang=cal]
-    PROCEDURE FizzBuzz(n : Integer) r_Text : Text[1024];
-    VAR
-      l_Text : Text[1024];
-    BEGIN
-      r_Text := '';
-      l_Text := FORMAT(n);
-
-      IF (n MOD 3 = 0) OR (STRPOS(l_Text,'3') > 0) THEN
-        r_Text := 'Fizz';
-      IF (n MOD 5 = 0) OR (STRPOS(l_Text,'5') > 0) THEN
-        r_Text := r_Text + 'Buzz';
-      IF r_Text = '' THEN
-        r_Text := l_Text;
-    END;
+- build a state machine that parses the input
+- usually involving regular expressions 
+- potentially fastest approach
+- hard to do, much work, hard to change 
 
 ***
 
-**Bayes' Rule in LaTeX**
+### What is a Parser? 
 
-$ \Pr(A|B)=\frac{\Pr(B|A)\Pr(A)}{\Pr(B|A)\Pr(A)+\Pr(B|\neg A)\Pr(\neg A)} $
+Takes an input state `s` and returns an output state `s'`, as well as an output `'t`. 
+
+    parser: Parser<'t, unit>
+
+A parser may also have an [user state](http://www.quanttec.com/fparsec/users-guide/parsing-with-user-state.html) `'u`: 
+
+    parser: Parser<'t, 'u>
+
+FParsec comes with a set of predefined parsers for primitives. 
+
+
+---
+
+### What is a Parser Combinator? 
+
+- A parser generator takes one or more parsers and combines them to a new parser 
+
+
+    combinator: Parser<'a,'u> -> Parser<'b,'u> -> Parser<'c,'u>
 
 ***
 
-### The Reality of a Developer's Life 
+### Parser Combinators: (preturn)
 
-**When I show my boss that I've fixed a bug:**
-  
-![When I show my boss that I've fixed a bug](http://www.topito.com/wp-content/uploads/2013/01/code-07.gif)
-  
-**When your regular expression returns what you expect:**
-  
-![When your regular expression returns what you expect](http://www.topito.com/wp-content/uploads/2013/01/code-03.gif)
-  
-*from [The Reality of a Developer's Life - in GIFs, Of Course](http://server.dzone.com/articles/reality-developers-life-gifs)*
+creates a parser `p` which returns `x`
 
+
+    let p = preturn x
+
+---
+
+### Parser Combinators: (>>=)
+
+applies an function `f` to the result of the parser `p` 
+
+
+    let pf = p >>= f
+
+
+it is the formal basis for all other combinators
+
+technically, no other combinators are needed 
+
+---
+
+### Parser Combinator: (>>%)
+
+ignores the result of the parser `p` and returns `x`
+
+
+    let px = p >>% x
+
+---
+
+### Parser Combinators: (>>.)
+
+ignores the result of the parser `p1` and returns the result of the parser `p2`
+
+    let p = p1 >>. p2
+
+
+---
+
+### Parser Combinators: (.>>)
+
+ignores the result of the parser `p2` and returns the result of the parser `p1`
+
+    let p = p1 .>> p2
+
+
+---
+
+### Parser Combinators: (.>>.)
+
+combines the result of the parser `p1` and the result of the parser `p2` into a tuple
+
+    let p = p1 .>>. p2
+
+---
+
+### Parser Combinators: (|>>)
+
+takes the result of the parser `p1` and applies the function `f` on it
+
+    let p = p1 |>> f
+
+
+---
+
+### Parser Combinators: (opt)
+
+returns an option type with `Some` representing the result of `p1`, otherwise it returns `None` 
+
+    let p = opt p1
+
+
+***
+
+### Operator Precedence Parser 
+
+Used to parse operator expressions. Uses a list of operators to parse expressions and a term parser. 
+
+    let private opp = new OperatorPrecedenceParser<decimal, unit, unit>()
+    opp.AddOperator ...
+    ...
+    let expr = opp.ExpressionParser
+    opp.TermParser <- between (pchar '(') (pchar ')') expr
+
+
+---
+
+### Operator Types
+
+* PrefixOperator 
+
+    `sin 5`
+
+* InfixOperator 
+
+    `2 + 3`
+
+* PostfixOperator 
+
+    `5!`
+
+* TernaryOperator 
+
+    `true ? 5 : 7`
+
+---
+
+### Operator Options 
+
+* Textual representation
+* Preamble to ignore
+* Precedence 
+* Associativity on `InfixOperator`
+* Mapping function 
+* Support for user state
+
+
+    InfixOperator("+", spaces, 1, Associativity.Left, fun x y -> x + y) 
+
+
+*** 
+
+## DEMO
+
+*** 
+
+## Q&A
+
+http://www.quanttec.com/fparsec/ 
