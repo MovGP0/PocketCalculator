@@ -49,7 +49,7 @@ module Parser =
         |>> fun _ -> phi
 
     let private pConstant = 
-        many1 (pCircleConstant <|> pEulersNumber <|> pGoldenRatio)
+        many1 (choice [pCircleConstant; pEulersNumber; pGoldenRatio])
 
     let private pNumberOrConstant : Parser<decimal,unit> =
         pnumber .>>. opt pConstant 
@@ -74,7 +74,7 @@ module Parser =
     let private atan = unary Math.Atan
     let private pow = binary Math.Pow
 
-    let private opp = new OperatorPrecedenceParser<decimal,unit,unit>()
+    let private opp = new OperatorPrecedenceParser<decimal, unit, unit>()
     opp.AddOperator(InfixOperator("+", spaces, 1, Associativity.Left, fun x y -> x + y))
     opp.AddOperator(InfixOperator("-", spaces, 1, Associativity.Left, fun x y -> x - y))
     opp.AddOperator(InfixOperator("*", spaces, 2, Associativity.Left, fun x y -> x * y))

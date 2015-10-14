@@ -1,16 +1,19 @@
 ﻿open PocketCalculator.Parser
+open System
 open System.Text
+
+let rec getInput () = 
+    Console.Write("input formula: ")
+    let input = Console.ReadLine()
+    if(String.IsNullOrEmpty input)
+    then
+        ()
+    else
+        calculator input 
+        |> printfn "%f" 
+        getInput ()
 
 [<EntryPoint>]
 let main (args:string[]) = 
-    let combine (sb:StringBuilder) (s:string) =
-        if sb.Length = 0 
-        then sb.Append s
-        else (sb.Append " ").Append s
-
-    args
-    |> Array.fold combine (new StringBuilder())
-    |> string
-    |> calculator 
-    |> printfn "%f" 
+    getInput()
     0

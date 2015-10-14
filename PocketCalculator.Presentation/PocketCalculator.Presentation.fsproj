@@ -58,7 +58,6 @@
     <None Include="App.config" />
     <None Include="build.fsx" />
     <Content Include="packages.config" />
-    <None Include="index.md" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="CSharpFormat">

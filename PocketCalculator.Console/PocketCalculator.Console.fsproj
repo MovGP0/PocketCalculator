@@ -52,7 +52,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PocketCalculator.fsproj">
+    <ProjectReference Include="..\PocketCalculator\PocketCalculator.fsproj">
       <Name>PocketCalculator</Name>
       <Project>{f7245d1f-2a7a-4c95-8594-f995e0744f82}</Project>
       <Private>True</Private>

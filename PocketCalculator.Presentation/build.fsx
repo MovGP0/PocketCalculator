@@ -1,7 +1,7 @@
-#I @"../packages/FsReveal.1.0.3/fsreveal/"
-#I @"../packages/FAKE.4.4.1/tools/"
-#I @"../packages/Suave.0.31.2/lib/net40"
-#I @"../packages/FSharp.Formatting.2.10.3/lib/net40"
+#I @"./packages/FsReveal/fsreveal/"
+#I @"./packages/FAKE/tools/"
+#I @"./packages/Suave/lib/net40"
+#I @"./packages/FSharp.Formatting/lib/net40"
 
 #r "FakeLib.dll"
 #r "suave.dll"

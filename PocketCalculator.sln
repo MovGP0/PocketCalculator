@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "PocketCalculator", "PocketCalculator.fsproj", "{F7245D1F-2A7A-4C95-8594-F995E0744F82}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketCalculator.Tests", "PocketCalculator.Tests\PocketCalculator.Tests.csproj", "{D9F9851F-FB3F-4218-B8E1-ACEA83FC029D}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "PocketCalculator.Console", "PocketCalculator.Console\PocketCalculator.Console.fsproj", "{B84D5C88-5034-4DDA-A21C-028D2050196A}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "PocketCalculator.Presentation", "PocketCalculator.Presentation\PocketCalculator.Presentation.fsproj", "{C709A326-F325-4CBC-83C1-7FDABDDE41E0}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "PocketCalculator", "PocketCalculator\PocketCalculator.fsproj", "{F7245D1F-2A7A-4C95-8594-F995E0744F82}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{F7245D1F-2A7A-4C95-8594-F995E0744F82}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F7245D1F-2A7A-4C95-8594-F995E0744F82}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F7245D1F-2A7A-4C95-8594-F995E0744F82}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F7245D1F-2A7A-4C95-8594-F995E0744F82}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D9F9851F-FB3F-4218-B8E1-ACEA83FC029D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D9F9851F-FB3F-4218-B8E1-ACEA83FC029D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D9F9851F-FB3F-4218-B8E1-ACEA83FC029D}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -33,6 +29,10 @@ Global
 		{C709A326-F325-4CBC-83C1-7FDABDDE41E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C709A326-F325-4CBC-83C1-7FDABDDE41E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C709A326-F325-4CBC-83C1-7FDABDDE41E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7245D1F-2A7A-4C95-8594-F995E0744F82}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7245D1F-2A7A-4C95-8594-F995E0744F82}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7245D1F-2A7A-4C95-8594-F995E0744F82}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7245D1F-2A7A-4C95-8594-F995E0744F82}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
